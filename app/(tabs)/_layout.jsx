@@ -1,5 +1,7 @@
 import { View, Text, Image } from 'react-native'
-import { Tabs, Redirect } from 'expo-router';
+import { Tabs, Redirect, SplashScreen } from 'expo-router';
+import { useFonts } from 'expo-font';
+import { useEffect } from 'react';
 import HomeIcon from '../../assets/home.png';
 import HistoryIcon from '../../assets/history.png';
 import { SMALL_FONT, NORM_FONT, HEADER_FONT } from '../config.js';
@@ -22,6 +24,7 @@ const TabLabel = ({ name, focused }) => {
         color: focused ? cnfg.TAB_ACTIVE_TINT : cnfg.TAB_INACTIVE_TINT,
         fontSize: SMALL_FONT,
         fontWeight: focused ? 'bold' : 'normal',
+        fontFamily: 'Kavoon_400Regular'
       }}
     >
       {name}
@@ -30,6 +33,19 @@ const TabLabel = ({ name, focused }) => {
 };
 
 const TabsLayout = () => {
+
+  const [fontsLoaded, error] = useFonts({
+    "Kavoon_400Regular": require("../../node_modules/@expo-google-fonts/kavoon/Kavoon_400Regular.ttf"),
+  })
+
+  useEffect(() =>{
+    if(error) throw error;
+
+    if(fontsLoaded) SplashScreen.hideAsync();
+  }, [fontsLoaded, error]);
+
+  if(!fontsLoaded && !error) return null;
+
   return (
     
     <>
