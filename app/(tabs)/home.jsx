@@ -1,11 +1,23 @@
-import { View, Text, Image, TextInput } from 'react-native'
-import React from 'react'
+import { View, Text, Image, TextInput} from 'react-native'
+import { useState } from 'react';
 import { SafeAreaView } from 'react-native-safe-area-context'
+import { Dropdown } from 'react-native-element-dropdown';
 import HydroBuddiesLogo from '../../assets/hydrobuddies-logo.png'
 import CustomButton from '../../components/CustomButton.jsx'
 import StyledText from '../../components/StyledText.jsx'
 
+const unitOptions = [
+  { label: 'm', value: 'm' },
+  { label: 'ft', value: 'ft' },
+];
+
 const Home = () => {
+  const [workoutDistance, setworkoutDistance] = useState({
+    distance: '',
+    units: 'm',
+  });
+  
+
   return (
     <SafeAreaView className=" h-full bg-primary items-center justify-between flex-col">
       <View className="relative h-24 w-full bg-secondary items-center flex-row">
@@ -25,7 +37,7 @@ const Home = () => {
         </View>
       </View>
 
-      <View className="h-40 w-72 px-5 py-3 bg-secondary items-center flex">
+      <View className="h-40 w-72 px-5 py-3 rounded-3xl bg-secondary items-center flex">
         <StyledText 
           text="Device Pair Name:"
           textStyles="text-2xl text-white"
@@ -37,16 +49,39 @@ const Home = () => {
         />
       </View>
 
-      <View className="h-28 w-80 bg-secondary flex-row">
+      <View className="h-28 w-80 rounded-l-3xl bg-secondary flex-row">
         
-        <View className="border-r flex-1">
+        <View className="p-4 border-r justify-center items-center flex-1">
           <TextInput 
-            className="text-white"
+            className="text-4xl h-full w-full text-right text-white font-kavoon bg-black"
             placeholderTextColor={"#C1C1C1"}
-            placeholder='Swim distance'
+            placeholder='Distance'
+            onChangeText={(e) => setworkoutDistance({...workoutDistance, distance: e})}
           />
         </View>
-        <View className="border-l w-2/5">
+        <View className="border-l w-2/5 items-center justify-center">
+        <Dropdown
+          style={{
+            backgroundColor: "#FFFFFF",
+            borderWidth: 1, // Add border
+            borderColor: "#CCC", // Light border color
+            paddingHorizontal: 15, // Add padding for spacing
+            borderRadius: 8, // Rounded corners
+          }}
+          data={unitOptions}
+          maxHeight={300}
+          labelField="label"
+          valueField="value"
+          placeholder="Select item"
+          placeholderStyle={{ color: "#888" }}
+          value={workoutDistance.units}
+          onChange={(e) => {
+            setworkoutDistance((prev) => ({
+              ...prev,
+              units: e.value,
+            }));
+          }}
+        />
 
         </View>
         
