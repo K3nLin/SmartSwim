@@ -1,10 +1,10 @@
 import { StatusBar } from 'expo-status-bar';
 import { Text, View, ScrollView, Image, Button } from 'react-native';
-import { Link } from 'expo-router';
+import { Link, router } from 'expo-router';
 import { SafeAreaView } from 'react-native-safe-area-context';
-import { FONT_APP } from './config.js';
 import HydroBuddiesLogo from '../assets/hydrobuddies-logo.png';
 import CustomButton from '../components/CustomButton.jsx';
+import StyledText from '../components/StyledText.jsx';
 
 export default function App() {
   return (
@@ -15,23 +15,21 @@ export default function App() {
           <View className="h-3/5 w-full justify-center items-center flex">
             <Image
               source={HydroBuddiesLogo}
-              // className="h-full w-full max-w-sm bg-white justify-center items-center"
               className="flex-1 bg-transparent"
               resizeMode="contain"
             />
           </View>
           
           <View>
-            <Text className="text-5xl text-white text-center mb-10" style={{
-              fontFamily: FONT_APP
-            }}>
-              Track All your Workouts! {'\n'} With your Personal {'\n'} Hydro Buddy!
-            </Text>
+            <StyledText 
+              text={"Track All your Workouts!\nWith your Personal\nHydro Buddy!"}
+              textStyles='text-5xl text-white text-center mb-10'
+            />
           </View>
           
           <CustomButton 
             title="Continue with Email" 
-            handlePress={() => {}}
+            handlePress={() => router.push('sign-in')}
             containerStyles="w-full h-20"
             textStyles="text-xl text-white"
 

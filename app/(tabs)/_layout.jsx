@@ -20,9 +20,9 @@ const TabIcon = ({icon, color, name, focused}) => {
 
 const TabLabel = ({ name, focused }) => {
   return (<Text
+      className="text-xs"
       style={{
         color: focused ? cnfg.TAB_ACTIVE_TINT : cnfg.TAB_INACTIVE_TINT,
-        fontSize: SMALL_FONT,
         fontWeight: focused ? 'bold' : 'normal',
         fontFamily: 'Kavoon_400Regular'
       }}
@@ -54,7 +54,9 @@ const TabsLayout = () => {
           tabBarActiveTintColor: '#FFA001',
           tabBarInactiveTintColor: '#FFFFFF',
           tabBarStyle: {
-            backgroundColor: cnfg.TAB_BACKGROUND_COLOR
+            backgroundColor: cnfg.TAB_BACKGROUND_COLOR,
+            borderTopWidth: 1,
+            borderTopColor: '#332958'
           }
         }}
       >
