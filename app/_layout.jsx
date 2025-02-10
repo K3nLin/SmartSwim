@@ -6,7 +6,7 @@ import { useEffect } from 'react';
 
 import "../global.css";
 
-SplashScreen.preventAutoHideAsync();
+// SplashScreen.preventAutoHideAsync();
 
 const RootLayout = () => {
 
@@ -17,7 +17,7 @@ const RootLayout = () => {
   useEffect(() =>{
     if(error) throw error;
 
-    if(fontsLoaded) SplashScreen.hideAsync();
+    // if(fontsLoaded) SplashScreen.hideAsync();
   }, [fontsLoaded, error]);
 
   if(!fontsLoaded && !error) return null;
