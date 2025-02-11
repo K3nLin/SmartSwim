@@ -3,7 +3,7 @@ import { View, Text, Button, PermissionsAndroid, Platform, Alert } from "react-n
 import CustomButton from "./CustomButton.jsx";
 import bleManager from "../services/BLEManager"; // Import the BLE manager
 
-const BleComponent = () => {
+const BleComponent = ({ setConnectionStatus, sendStartSignalRef }) => {
   const [device, setDevice] = useState(null);
   const [isConnected, setIsConnected] = useState(false);
 
