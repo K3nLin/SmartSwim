@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { View, Text, Button, PermissionsAndroid, Platform, Alert } from "react-native";
+import CustomButton from "./CustomButton.jsx";
 import bleManager from "../services/BLEManager"; // Import the BLE manager
 
 const BleComponent = () => {
@@ -35,7 +36,7 @@ const BleComponent = () => {
 
       console.log("Scanned Device:", scannedDevice.name, scannedDevice.id);
 
-      if (scannedDevice.name === "ESP32-BT-Slave") {
+      if (scannedDevice.name === "ESP32-BLE") {
         bleManager.stopDeviceScan();
         connectToDevice(scannedDevice);
       }
@@ -49,45 +50,62 @@ const BleComponent = () => {
       await connectedDevice.discoverAllServicesAndCharacteristics();
       setDevice(connectedDevice);
       setIsConnected(true);
+      setConnectionStatus(device.name || "Connected!");
       console.log("Connected to ESP32:", connectedDevice.id);
     } catch (error) {
       console.log("Connection error:", error);
+      setConnectionStatus("Error connecting");
       Alert.alert("Connection Failed", "Could not connect to ESP32.");
     }
   };
 
   // Send data to ESP32
-  const sendData = async () => {
-    if (!device) return;
+  const sendStartSignal = async () => {
+    if (!device) {
+      Alert.alert("Error", "Device not connected");
+      return;
+    }
 
-    const serviceUUID = "your-service-uuid"; // Replace with ESP32 Service UUID
-    const characteristicUUID = "your-characteristic-uuid"; // Replace with ESP32 Characteristic UUID
+    const serviceUUID = "12345678-1234-5678-1234-56789abcdef0"; // Replace with your ESP32 Service UUID
+    const startSignalUUID = "abcdef02-1234-5678-1234-56789abcdef0"; // Replace with Start Signal Characteristic UUID
 
     try {
       await device.writeCharacteristicWithResponseForService(
         serviceUUID,
-        characteristicUUID,
-        Buffer.from("Hello ESP32!").toString("base64")
+        startSignalUUID,
+        Buffer.from("start").toString("base64")
       );
-      console.log("Data sent to ESP32!");
-      Alert.alert("Success", "Data sent to ESP32.");
+      console.log("Start signal sent!");
+      Alert.alert("Success", "Start signal sent to ESP32.");
     } catch (error) {
       console.log("Write error:", error);
-      Alert.alert("Error", "Failed to send data.");
+      Alert.alert("Error", "Failed to send start signal.");
     }
   };
 
-  return (
-    <View style={{ padding: 20 }}>
-      <Text style={{ fontSize: 20, fontWeight: "bold", marginBottom: 10 }}>BLE with ESP32</Text>
-      <Button title="Scan for Devices" onPress={scanAndConnect} />
-      {isConnected && (
-        <View style={{ marginTop: 10 }}>
-          <Button title="Send Data to ESP32" onPress={sendData} />
-        </View>
-      )}
-    </View>
-  );
+  if (sendStartSignalRef) {
+    sendStartSignalRef.current = sendStartSignal;
+  }
+
+    return (
+        <CustomButton 
+            title="Connect Device"
+            containerStyles={"h-12 w-50"}
+            textStyles={"text-white"}
+            bgColor="bg-green-500"
+            handlePress={scanAndConnect}
+        />
+    );
 };
 
 export default BleComponent;
+
+// <View style={{ padding: 20 }}>
+//   <Text style={{ fontSize: 20, fontWeight: "bold", marginBottom: 10 }}>BLE with ESP32</Text>
+//   <Button title="Scan for Devices" onPress={scanAndConnect} />
+//   {isConnected && (
+//     <View style={{ marginTop: 10 }}>
+//       <Button title="Send Data to ESP32" onPress={sendData} />
+//     </View>
+//   )}
+// </View>

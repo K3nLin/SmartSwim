@@ -6,6 +6,7 @@ import HydroBuddiesLogo from "../../assets/hydrobuddies-logo.png";
 import CustomButton from "../../components/CustomButton.jsx";
 import StyledText from "../../components/StyledText.jsx";
 import AntDesign from "@expo/vector-icons/AntDesign";
+import BleComponent from "../../components/BLEComponent.jsx";
 
 const unitOptions = [
   { label: "m", value: "m" },
@@ -17,6 +18,8 @@ const Home = () => {
     distance: "",
     units: "m",
   });
+
+  const [connectionStatus, setConnectionStatus] = useState("Searching...");
 
   return (
     <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
@@ -37,8 +40,10 @@ const Home = () => {
 
         <View className="h-40 w-72 px-5 py-3 rounded-3xl bg-secondary items-center flex">
           <StyledText text="Device Pair Name:" textStyles="text-2xl text-white" />
-          <StyledText text="Name" textStyles="text-xl text-white" />
+          <StyledText text={connectionStatus} textStyles="text-xl text-white" />
         </View>
+
+        <BleComponent setConnectionStatus={setConnectionStatus} sendStartSignalRef={sendStartSignalRef} />
 
         <View className="h-28 w-80 rounded-3xl bg-secondary flex-row">
           <View className="px-2 py-4 border-r border-input_border justify-center items-center flex-1">
@@ -98,10 +103,21 @@ const Home = () => {
           rounded="rounded-full"
           textStyles="text-7xl text-white"
           handlePress={() => {
-            if (!workoutDistance.distance) return;
-            console.log(workoutDistance)
+            if (!workoutDistance.distance) {
+              Alert.alert("Error", "Please enter a distance.");
+              return;
+            }
+
+            console.log("Workout Distance:", workoutDistance);
+            
+            if (sendStartSignalRef.current) {
+              sendStartSignalRef.current();
+            } else {
+              Alert.alert("Error", "BLE device not connected.");
+            }
           }}
         />
+
       </SafeAreaView>
     </TouchableWithoutFeedback>
   );
