@@ -1,5 +1,5 @@
 import { View, Text, Image, TextInput, TouchableOpacity, TouchableWithoutFeedback, Keyboard } from "react-native";
-import { useState } from "react";
+import { useState, useRef } from "react";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { Dropdown } from "react-native-element-dropdown";
 import HydroBuddiesLogo from "../../assets/hydrobuddies-logo.png";
@@ -19,7 +19,8 @@ const Home = () => {
     units: "m",
   });
 
-  const [connectionStatus, setConnectionStatus] = useState("Searching...");
+const [connectionStatus, setConnectionStatus] = useState("Searching...");
+const sendStartSignalRef = useRef(null);
 
   return (
     <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
