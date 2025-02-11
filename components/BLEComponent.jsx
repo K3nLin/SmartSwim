@@ -1,7 +1,8 @@
 import React, { useEffect, useState } from "react";
 import { View, Text, Button, PermissionsAndroid, Platform, Alert } from "react-native";
+import { Buffer } from "buffer";
 import CustomButton from "./CustomButton.jsx";
-import bleManager from "../services/BLEManager"; // Import the BLE manager
+import bleManager from "../services/BLEManager";
 
 const BleComponent = ({ setConnectionStatus, sendStartSignalRef }) => {
   const [device, setDevice] = useState(null);
@@ -11,7 +12,7 @@ const BleComponent = ({ setConnectionStatus, sendStartSignalRef }) => {
     requestPermissions();
   }, []);
 
-  // Request necessary Bluetooth permissions (Android 12+ requires more permissions)
+
   const requestPermissions = async () => {
     if (Platform.OS === "android" && Platform.Version >= 23) {
       try {
@@ -99,13 +100,3 @@ const BleComponent = ({ setConnectionStatus, sendStartSignalRef }) => {
 };
 
 export default BleComponent;
-
-// <View style={{ padding: 20 }}>
-//   <Text style={{ fontSize: 20, fontWeight: "bold", marginBottom: 10 }}>BLE with ESP32</Text>
-//   <Button title="Scan for Devices" onPress={scanAndConnect} />
-//   {isConnected && (
-//     <View style={{ marginTop: 10 }}>
-//       <Button title="Send Data to ESP32" onPress={sendData} />
-//     </View>
-//   )}
-// </View>

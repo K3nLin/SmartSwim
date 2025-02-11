@@ -12,6 +12,7 @@
     "@expo-google-fonts/kavoon": "^0.2.3",
     "@fontsource/kavoon": "^5.1.1",
     "@react-native-community/cli": "^15.1.3",
+    "buffer": "^6.0.3",
     "expo": "~52.0.28",
     "expo-app-loading": "^2.1.1",
     "expo-constants": "~17.0.5",

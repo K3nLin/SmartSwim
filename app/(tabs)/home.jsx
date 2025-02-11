@@ -1,4 +1,4 @@
-import { View, Text, Image, TextInput, TouchableOpacity, TouchableWithoutFeedback, Keyboard } from "react-native";
+import { View, Text, Image, TextInput, TouchableOpacity, TouchableWithoutFeedback, Keyboard, Alert } from "react-native";
 import { useState, useRef } from "react";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { Dropdown } from "react-native-element-dropdown";
@@ -19,7 +19,7 @@ const Home = () => {
     units: "m",
   });
 
-const [connectionStatus, setConnectionStatus] = useState("Searching...");
+const [connectionStatus, setConnectionStatus] = useState("None");
 const sendStartSignalRef = useRef(null);
 
   return (
