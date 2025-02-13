@@ -1,4 +1,13 @@
-import { View, Text, Image, TextInput, TouchableOpacity, TouchableWithoutFeedback, Keyboard, Alert } from "react-native";
+import {
+  View,
+  Text,
+  Image,
+  TextInput,
+  TouchableOpacity,
+  TouchableWithoutFeedback,
+  Keyboard,
+  Alert,
+} from "react-native";
 import { useState, useRef } from "react";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { Dropdown } from "react-native-element-dropdown";
@@ -19,12 +28,12 @@ const Home = () => {
     units: "m",
   });
 
-const [connectionStatus, setConnectionStatus] = useState("None");
-const [started, setStarted] = useState(false);
-const sendStartSignalRef = useRef(null);
-const sendStopSignalRef = useRef(null);
-const readDataRef = useRef(null);
-const stopReadDataRef = useRef(null);
+  const [connectionStatus, setConnectionStatus] = useState("None");
+  const [started, setStarted] = useState(false);
+  const sendStartSignalRef = useRef(null);
+  const sendStopSignalRef = useRef(null);
+  const readDataRef = useRef(null);
+  const stopReadDataRef = useRef(null);
 
   return (
     <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
@@ -44,14 +53,17 @@ const stopReadDataRef = useRef(null);
         </View>
 
         <View className="h-40 w-72 px-5 py-3 rounded-3xl bg-secondary items-center flex">
-          <StyledText text="Device Pair Name:" textStyles="text-2xl text-white" />
+          <StyledText
+            text="Device Pair Name:"
+            textStyles="text-2xl text-white"
+          />
           <StyledText text={connectionStatus} textStyles="text-xl text-white" />
         </View>
 
-        <BleComponent 
-          setConnectionStatus={setConnectionStatus} 
-          sendStartSignalRef={sendStartSignalRef} 
-          sendStopSignalRef={sendStopSignalRef} 
+        <BleComponent
+          setConnectionStatus={setConnectionStatus}
+          sendStartSignalRef={sendStartSignalRef}
+          sendStopSignalRef={sendStopSignalRef}
           readDataRef={readDataRef}
           stopReadDataRef={stopReadDataRef}
         />
@@ -64,9 +76,8 @@ const stopReadDataRef = useRef(null);
               placeholder="Distance"
               keyboardType="number-pad"
               onChangeText={(e) => {
-                setworkoutDistance({ ...workoutDistance, distance: e })
-                }
-              }
+                setworkoutDistance({ ...workoutDistance, distance: e });
+              }}
             />
           </View>
 
@@ -75,7 +86,7 @@ const stopReadDataRef = useRef(null);
               style={{
                 flex: 1,
                 paddingHorizontal: 15,
-                height: '100%',
+                height: "100%",
               }}
               data={unitOptions}
               maxHeight={150}
@@ -92,16 +103,21 @@ const stopReadDataRef = useRef(null);
               containerStyle={{
                 backgroundColor: "#332958",
                 borderWidth: 1,
-                borderColor: "#2A224B"
+                borderColor: "#2A224B",
               }}
               itemContainerStyle={{
-                backgroundColor: "#332958"
+                backgroundColor: "#332958",
               }}
               itemTextStyle={{
                 color: "white",
-                fontFamily: "Kavoon_400Regular"
+                fontFamily: "Kavoon_400Regular",
               }}
-              selectedTextStyle={{ marginBottom: 4 , fontSize: 35, color: "white", fontFamily: "Kavoon_400Regular" }}
+              selectedTextStyle={{
+                marginBottom: 4,
+                fontSize: 35,
+                color: "white",
+                fontFamily: "Kavoon_400Regular",
+              }}
               activeColor="#4E3F92"
             />
           </View>
@@ -110,7 +126,7 @@ const stopReadDataRef = useRef(null);
         <CustomButton
           title="Start"
           bgColor="bg-green-500"
-          containerStyles={`h-80 w-80 ${started ? 'hidden': ''}`}
+          containerStyles={`h-80 w-80 ${started ? "hidden" : ""}`}
           rounded="rounded-full"
           textStyles="text-7xl text-white"
           handlePress={() => {
@@ -120,7 +136,7 @@ const stopReadDataRef = useRef(null);
             }
 
             console.log("Workout Distance:", workoutDistance);
-            
+
             if (sendStartSignalRef.current) {
               sendStartSignalRef.current();
             } else {
@@ -131,19 +147,18 @@ const stopReadDataRef = useRef(null);
             setStarted(true);
 
             readDataRef.current?.();
-
           }}
         />
 
-        <CustomButton 
+        <CustomButton
           title="Stop"
           bgColor="bg-red-500"
-          containerStyles={`h-80 w-80 ${!started ? 'hidden' : ''}`} 
+          containerStyles={`h-80 w-80 ${!started ? "hidden" : ""}`}
           rounded="rounded-full"
           textStyles="text-7xl text-white"
           handlePress={() => {
             if (!started) return;
-            
+
             if (sendStopSignalRef.current) {
               sendStopSignalRef.current();
             } else {
@@ -156,7 +171,6 @@ const stopReadDataRef = useRef(null);
             stopReadDataRef.current?.();
           }}
         />
-
       </SafeAreaView>
     </TouchableWithoutFeedback>
   );
