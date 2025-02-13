@@ -20,7 +20,11 @@ const Home = () => {
   });
 
 const [connectionStatus, setConnectionStatus] = useState("None");
+const [started, setStarted] = useState(false);
 const sendStartSignalRef = useRef(null);
+const sendStopSignalRef = useRef(null);
+const readDataRef = useRef(null);
+const stopReadDataRef = useRef(null);
 
   return (
     <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
@@ -44,7 +48,13 @@ const sendStartSignalRef = useRef(null);
           <StyledText text={connectionStatus} textStyles="text-xl text-white" />
         </View>
 
-        <BleComponent setConnectionStatus={setConnectionStatus} sendStartSignalRef={sendStartSignalRef} />
+        <BleComponent 
+          setConnectionStatus={setConnectionStatus} 
+          sendStartSignalRef={sendStartSignalRef} 
+          sendStopSignalRef={sendStopSignalRef} 
+          readDataRef={readDataRef}
+          stopReadDataRef={stopReadDataRef}
+        />
 
         <View className="h-28 w-80 rounded-3xl bg-secondary flex-row">
           <View className="px-2 py-4 border-r border-input_border justify-center items-center flex-1">
@@ -100,7 +110,7 @@ const sendStartSignalRef = useRef(null);
         <CustomButton
           title="Start"
           bgColor="bg-green-500"
-          containerStyles="h-80 w-80"
+          containerStyles={`h-80 w-80 ${started ? 'hidden': ''}`}
           rounded="rounded-full"
           textStyles="text-7xl text-white"
           handlePress={() => {
@@ -115,7 +125,35 @@ const sendStartSignalRef = useRef(null);
               sendStartSignalRef.current();
             } else {
               Alert.alert("Error", "BLE device not connected.");
+              return;
             }
+
+            setStarted(true);
+
+            readDataRef.current?.();
+
+          }}
+        />
+
+        <CustomButton 
+          title="Stop"
+          bgColor="bg-red-500"
+          containerStyles={`h-80 w-80 ${!started ? 'hidden' : ''}`} 
+          rounded="rounded-full"
+          textStyles="text-7xl text-white"
+          handlePress={() => {
+            if (!started) return;
+            
+            if (sendStopSignalRef.current) {
+              sendStopSignalRef.current();
+            } else {
+              Alert.alert("Error", "BLE device not connected.");
+              return;
+            }
+
+            setStarted(false);
+
+            stopReadDataRef.current?.();
           }}
         />
 
