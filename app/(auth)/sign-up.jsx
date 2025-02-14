@@ -1,4 +1,4 @@
-import { View, Text, Image, TouchableOpacity } from "react-native";
+import { View, Text, Image, TouchableOpacity, Alert } from "react-native";
 import { useState } from "react";
 import { router } from "expo-router";
 import { SafeAreaView } from "react-native-safe-area-context";
@@ -8,18 +8,22 @@ import StyledText from "../../components/StyledText.jsx";
 import FormField from "../../components/FormField.jsx";
 
 const SignUp = () => {
-  const [form, setForm] = useState({
-    username: "",
-    email: "",
-    password: "",
-  });
+    const [form, setForm] = useState({
+      username: "",
+      email: "",
+      password: "",
+    });
 
   const [isSubmitting, setIsSubmitting] = useState(false);
 
   const submit = async () => {
     // router.push('home')
-
     try {
+      if (!form.username || !form.email || !form.password) {
+        Alert.alert("Please Fill All Fields!");
+        return;
+      };
+
       const result = await fetch("api/register", {
         method: "POST",
         headers: {
