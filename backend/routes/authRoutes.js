@@ -1,5 +1,6 @@
 const express = require("express");
-const { registerUser, loginUser } = require("../controllers/authController");
+const { registerUser, loginUser } = require("../controllers/authController.js");
+const { authMiddleware } = require("../middleware/authMiddleware.js");
 
 const router = express.Router();
 
@@ -8,8 +9,8 @@ router.post("/register", registerUser);
 router.post("/login", loginUser);
 
 // Protected routes (Require authentication)
-router.get("/workouts", authMiddleware, getUserWorkouts);
-router.post("/workouts", authMiddleware, saveWorkout);
-router.put("/user", authMiddleware, updateUserProfile);
+// router.get("/workouts", authMiddleware, getUserWorkouts);
+// router.post("/workouts", authMiddleware, saveWorkout);
+// router.put("/user", authMiddleware, updateUserProfile);
 
 module.exports = router;

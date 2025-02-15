@@ -39,3 +39,5 @@ yarn-error.*
 
 android/
 .idea
+
+.backendconfig.js

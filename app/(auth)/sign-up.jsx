@@ -21,6 +21,8 @@ const SignUp = () => {
       if (!form.username || !form.email || !form.password)
         throw new Error("Please fill out all fields!");
 
+      console.log(form);
+
       const result = await fetch("api/register", {
         method: "POST",
         headers: {
@@ -29,15 +31,18 @@ const SignUp = () => {
         body: JSON.stringify(form),
       });
 
+      console.log(result.ok);
+      console.log(result);
+
       if (!result.ok) {
         const res = await result.json();
         throw new Error(res.msg || "Registration Failed!");
       }
 
       Alert.alert("Registration Successful!");
-      router.push("sing-in");
+      router.push("sign-in");
     } catch (err) {
-      Alert.alert(err, "Try Again!");
+      Alert.alert(err.message, "Try Again!");
     }
   };
 

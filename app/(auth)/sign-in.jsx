@@ -1,4 +1,4 @@
-import { View, Text, Image, TouchableOpacity } from "react-native";
+import { View, Text, Image, TouchableOpacity, Alert } from "react-native";
 import { useState } from "react";
 import { router } from "expo-router";
 import { SafeAreaView } from "react-native-safe-area-context";
@@ -35,7 +35,7 @@ const SignIn = () => {
 
       router.push("home");
     } catch (err) {
-      Alert.alert(err, "Please Try Again!");
+      Alert.alert(err.message, "Please Try Again!");
     }
   };
 
