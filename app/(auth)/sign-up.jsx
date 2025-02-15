@@ -8,21 +8,18 @@ import StyledText from "../../components/StyledText.jsx";
 import FormField from "../../components/FormField.jsx";
 
 const SignUp = () => {
-    const [form, setForm] = useState({
-      username: "",
-      email: "",
-      password: "",
-    });
+  const [form, setForm] = useState({
+    username: "",
+    email: "",
+    password: "",
+  });
 
   const [isSubmitting, setIsSubmitting] = useState(false);
 
   const submit = async () => {
-    // router.push('home')
     try {
-      if (!form.username || !form.email || !form.password) {
-        Alert.alert("Please Fill All Fields!");
-        return;
-      };
+      if (!form.username || !form.email || !form.password)
+        throw new Error("Please fill out all fields!");
 
       const result = await fetch("api/register", {
         method: "POST",
@@ -32,9 +29,15 @@ const SignUp = () => {
         body: JSON.stringify(form),
       });
 
-      const res = await result.json();
+      if (!result.ok) {
+        const res = await result.json();
+        throw new Error(res.msg || "Registration Failed!");
+      }
+
+      Alert.alert("Registration Successful!");
+      router.push("sing-in");
     } catch (err) {
-      console.log(err, "Error in submitting!");
+      Alert.alert(err, "Try Again!");
     }
   };
 

@@ -1,74 +1,92 @@
-import { View, Text, Image, TouchableOpacity } from 'react-native'
-import { useState } from 'react'
-import { router } from 'expo-router'
-import { SafeAreaView } from 'react-native-safe-area-context'
-import HydroBuddiesLogo from '../../assets/hydrobuddies-logo.png'
-import CustomButton from '../../components/CustomButton.jsx';
-import StyledText from '../../components/StyledText.jsx'
-import FormField from '../../components/FormField.jsx'
+import { View, Text, Image, TouchableOpacity } from "react-native";
+import { useState } from "react";
+import { router } from "expo-router";
+import { SafeAreaView } from "react-native-safe-area-context";
+import HydroBuddiesLogo from "../../assets/hydrobuddies-logo.png";
+import CustomButton from "../../components/CustomButton.jsx";
+import StyledText from "../../components/StyledText.jsx";
+import FormField from "../../components/FormField.jsx";
 
 const SignIn = () => {
   const [form, setForm] = useState({
-    email: '',
-    password: ''
-  })
+    email: "",
+    password: "",
+  });
 
-  const [isSubmitting, setIsSubmitting] = useState(false)
+  const [isSubmitting, setIsSubmitting] = useState(false);
 
-  const submit = () => {
-    router.push('home')
-  }
+  const submit = async () => {
+    try {
+      if (!form.email || !form.password)
+        throw new Error("Please fill out all fields!");
+
+      const result = await fetch("api/login", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(form),
+      });
+
+      if (!result.ok) {
+        const res = await result.json();
+        throw new Error(res.msg || "Failed to Login!");
+      }
+
+      router.push("home");
+    } catch (err) {
+      Alert.alert(err, "Please Try Again!");
+    }
+  };
 
   return (
     <SafeAreaView className="bg-primary h-full px-5">
       <View className="flex h-1/4 w-full translate-y-2 z-10 justify-center items-center">
-        <Image 
+        <Image
           source={HydroBuddiesLogo}
           className="flex-1 -mb-16 -mt-20"
-          resizeMode='contain'
+          resizeMode="contain"
         />
       </View>
       <View className="bg-secondary px-5 rounded-3xl h-2/5 w-full justify-center flex justify-evenly">
-
-        <FormField 
+        <FormField
           title="Email"
           value={form.email}
           handleChangeText={(e) => {
-            setForm({...form, email: e})
+            setForm({ ...form, email: e });
           }}
           placeholder="Enter Email"
           keyboardType="email-address"
         />
 
-        <FormField 
+        <FormField
           title="Password"
           value={form.password}
-          handleChangeText={(e) => setForm({...form, password: e})}
+          handleChangeText={(e) => setForm({ ...form, password: e })}
           placeholder="Enter Password"
         />
       </View>
 
       <CustomButton
         title="Sign In"
-        bgColor='bg-green-600' 
+        bgColor="bg-green-600"
         handlePress={submit}
         containerStyles={"py-6 mt-5"}
         textStyles={"text-lg text-white"}
-      />  
+      />
 
       <View className="py-5">
-        <TouchableOpacity 
+        <TouchableOpacity
           className="justify-center items-center"
-          onPress={()=>router.push('sign-up')}
+          onPress={() => router.push("sign-up")}
         >
           <Text className="text-white font-kavoon">
             Don't have an account? Sign Up!
           </Text>
         </TouchableOpacity>
       </View>
-
     </SafeAreaView>
-  )
-}
+  );
+};
 
-export default SignIn
+export default SignIn;
