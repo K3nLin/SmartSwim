@@ -6,6 +6,7 @@ import HydroBuddiesLogo from "../../assets/hydrobuddies-logo.png";
 import CustomButton from "../../components/CustomButton.jsx";
 import StyledText from "../../components/StyledText.jsx";
 import FormField from "../../components/FormField.jsx";
+import { BASE_URL } from "../../backend/config/backendconfig.js";
 
 const SignIn = () => {
   const [form, setForm] = useState({
@@ -20,7 +21,7 @@ const SignIn = () => {
       if (!form.email || !form.password)
         throw new Error("Please fill out all fields!");
 
-      const result = await fetch("api/login", {
+      const result = await fetch(`${BASE_URL}/api/login`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",

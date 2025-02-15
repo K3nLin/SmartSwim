@@ -6,6 +6,7 @@ import HydroBuddiesLogo from "../../assets/hydrobuddies-logo.png";
 import CustomButton from "../../components/CustomButton.jsx";
 import StyledText from "../../components/StyledText.jsx";
 import FormField from "../../components/FormField.jsx";
+import BASE_URL from "../config.js";
 
 const SignUp = () => {
   const [form, setForm] = useState({
@@ -23,7 +24,10 @@ const SignUp = () => {
 
       console.log(form);
 
-      const result = await fetch("api/register", {
+      console.log("Sending request to:", `${BASE_URL}/api/auth/register`);
+      console.log("Request body:", JSON.stringify(form));
+
+      const result = await fetch(`${BASE_URL}/api/register`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -42,6 +46,7 @@ const SignUp = () => {
       Alert.alert("Registration Successful!");
       router.push("sign-in");
     } catch (err) {
+      console.log("Signup Error!");
       Alert.alert(err.message, "Try Again!");
     }
   };
