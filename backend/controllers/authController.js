@@ -3,7 +3,6 @@ const jwt = require("jsonwebtoken");
 const User = require("../models/User");
 
 exports.registerUser = async (req, res) => {
-  console.log("Register function called");
   const { username, email, password } = req.body;
 
   try {

@@ -5,8 +5,8 @@ const { authMiddleware } = require("../middleware/authMiddleware.js");
 const router = express.Router();
 
 // Public routes (No authentication required)
-router.post("/register", registerUser);
-router.post("/login", loginUser);
+router.post("/auth/register", registerUser);
+router.post("/auth/login", loginUser);
 
 // Protected routes (Require authentication)
 // router.get("/workouts", authMiddleware, getUserWorkouts);
