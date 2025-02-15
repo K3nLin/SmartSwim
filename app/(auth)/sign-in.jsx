@@ -17,29 +17,30 @@ const SignIn = () => {
   const [isSubmitting, setIsSubmitting] = useState(false);
 
   const submit = async () => {
-    try {
-      if (!form.email || !form.password)
-        throw new Error("Please fill out all fields!");
+    // try {
+    //   if (!form.email || !form.password)
+    //     throw new Error("Please fill out all fields!");
 
-      console.log(`${BASE_URL}/api/login`);
+    //   console.log(`${BASE_URL}/api/login`);
 
-      const result = await fetch(`${BASE_URL}/auth/login`, {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify(form),
-      });
+    //   const result = await fetch(`${BASE_URL}/auth/login`, {
+    //     method: "POST",
+    //     headers: {
+    //       "Content-Type": "application/json",
+    //     },
+    //     body: JSON.stringify(form),
+    //   });
 
-      if (!result.ok) {
-        const res = await result.json();
-        throw new Error(res.msg || "Failed to Login!");
-      }
+    //   if (!result.ok) {
+    //     const res = await result.json();
+    //     throw new Error(res.msg || "Failed to Login!");
+    //   }
 
-      router.push("home");
-    } catch (err) {
-      Alert.alert(err.message, "Please Try Again!");
-    }
+    //   router.push("home");
+    // } catch (err) {
+    //   Alert.alert(err.message, "Please Try Again!");
+    // }
+    router.push("home");
   };
 
   return (

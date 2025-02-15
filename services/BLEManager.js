@@ -1,5 +1,5 @@
-// import { BleManager } from "react-native-ble-plx";
+import { BleManager } from "react-native-ble-plx";
 
-// const bleManager = new BleManager();
+const bleManager = new BleManager();
 
-// export default bleManager;
+export default bleManager;
