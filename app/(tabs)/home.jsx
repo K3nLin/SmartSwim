@@ -16,7 +16,7 @@ import CustomButton from "../../components/CustomButton.jsx";
 import StyledText from "../../components/StyledText.jsx";
 import AntDesign from "@expo/vector-icons/AntDesign";
 
-// import BleComponent from "../../components/BLEComponent.jsx";
+import BleComponent from "../../components/BLEComponent.jsx";
 
 const unitOptions = [
   { label: "m", value: "m" },
@@ -61,13 +61,13 @@ const Home = () => {
           <StyledText text={connectionStatus} textStyles="text-xl text-white" />
         </View>
 
-        {/* <BleComponent
+        <BleComponent
           setConnectionStatus={setConnectionStatus}
           sendStartSignalRef={sendStartSignalRef}
           sendStopSignalRef={sendStopSignalRef}
           readDataRef={readDataRef}
           stopReadDataRef={stopReadDataRef}
-        /> */}
+        />
 
         <View className="h-28 w-80 rounded-3xl bg-secondary flex-row">
           <View className="px-2 py-4 border-r border-input_border justify-center items-center flex-1">
@@ -131,23 +131,23 @@ const Home = () => {
           rounded="rounded-full"
           textStyles="text-7xl text-white"
           handlePress={() => {
-            // if (!workoutDistance.distance) {
-            //   Alert.alert("Error", "Please enter a distance.");
-            //   return;
-            // }
+            if (!workoutDistance.distance) {
+              Alert.alert("Error", "Please enter a distance.");
+              return;
+            }
 
-            // console.log("Workout Distance:", workoutDistance);
+            console.log("Workout Distance:", workoutDistance);
 
-            // if (sendStartSignalRef.current) {
-            //   sendStartSignalRef.current();
-            // } else {
-            //   Alert.alert("Error", "BLE device not connected.");
-            //   return;
-            // }
+            if (sendStartSignalRef.current) {
+              sendStartSignalRef.current();
+            } else {
+              Alert.alert("Error", "BLE device not connected.");
+              return;
+            }
 
-            // setStarted(true);
+            setStarted(true);
 
-            // readDataRef.current?.();
+            readDataRef.current?.();
           }}
         />
 
@@ -158,18 +158,18 @@ const Home = () => {
           rounded="rounded-full"
           textStyles="text-7xl text-white"
           handlePress={() => {
-            // if (!started) return;
+            if (!started) return;
 
-            // if (sendStopSignalRef.current) {
-            //   sendStopSignalRef.current();
-            // } else {
-            //   Alert.alert("Error", "BLE device not connected.");
-            //   return;
-            // }
+            if (sendStopSignalRef.current) {
+              sendStopSignalRef.current();
+            } else {
+              Alert.alert("Error", "BLE device not connected.");
+              return;
+            }
 
-            // setStarted(false);
+            setStarted(false);
 
-            // stopReadDataRef.current?.();
+            stopReadDataRef.current?.();
           }}
         />
       </SafeAreaView>
