@@ -145,6 +145,8 @@ const BleComponent = ({
             return;
           }
 
+          console.log(characteristic);
+
           // Convert received data to string
           const receivedData = Buffer.from(
             characteristic.value,
@@ -153,8 +155,8 @@ const BleComponent = ({
           console.log("Received:", receivedData);
 
           try {
-            const jsonData = JSON.parse(receivedData);
-            console.log("Parsed Data:", jsonData);
+            // const jsonData = JSON.parse(receivedData);
+            // console.log("Parsed Data:", jsonData);
             // Store GPS & acceleration data for distance calculations
           } catch (err) {
             console.error("JSON Parse Error:", err);
