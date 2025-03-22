@@ -4,7 +4,13 @@ module.exports = {
   content: ['./App.{js,jsx,ts,tsx}'],
   presets: [require('nativewind/preset')],
   theme: {
-    extend: {},
+    extend: {
+      colors: {
+        primary: '#4E3F92',
+        secondary: '#332958',
+      },
+    },
+    fontFamily: {},
   },
-  plugins: [],
+  plugins: ['Kavoon_Regular'],
 };
