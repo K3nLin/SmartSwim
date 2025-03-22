@@ -2,10 +2,7 @@ import {Text} from 'react-native';
 
 const StyledText = ({textStyle, children, ...props}) => {
   return (
-    <Text
-      className={textStyle}
-      style={{fontFamily: 'Kavoon-Regular'}}
-      {...props}>
+    <Text className={`${textStyle} font-kavoon`} {...props}>
       {children}
     </Text>
   );
