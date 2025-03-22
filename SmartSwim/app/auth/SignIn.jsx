@@ -83,7 +83,7 @@ const SignIn = () => {
       <View className="py-5">
         <TouchableOpacity
           className="justify-center items-center"
-          onPress={() => navigation.navigate('sign-up')}>
+          onPress={() => navigation.replace('SignUp')}>
           <Text className="text-white font-kavoon">
             Don't have an account? Sign Up!
           </Text>

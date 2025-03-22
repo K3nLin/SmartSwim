@@ -9,6 +9,7 @@ import {createStackNavigator} from '@react-navigation/stack';
 
 import LandingScreen from './app/LandingScreen.jsx';
 import SignInScreen from './app/auth/SignIn.jsx';
+import SignUpScreen from './app/auth/SignUp.jsx';
 import HomeScreen from './app/tabs/Home.jsx';
 
 import StyledText from './components/StyledText.jsx';
@@ -28,6 +29,11 @@ export default function App() {
           <Stack.Screen
             name="SignIn"
             component={SignInScreen}
+            options={{headerShown: false}}
+          />
+          <Stack.Screen
+            name="SignUp"
+            component={SignUpScreen}
             options={{headerShown: false}}
           />
           <Stack.Screen
