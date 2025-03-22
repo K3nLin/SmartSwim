@@ -41,7 +41,7 @@ const SignIn = () => {
     // } catch (err) {
     //   Alert.alert(err.message, "Please Try Again!");
     // }
-    navigation.navigate('Home');
+    navigation.replace('Home');
   };
 
   return (

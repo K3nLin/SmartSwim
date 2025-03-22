@@ -1,8 +1,8 @@
 import {SafeAreaView} from 'react-native-safe-area-context';
-import {Text, View, ScrollView, Image, TouchableOpacity} from 'react-native';
+import {View, ScrollView, Image} from 'react-native';
 
 import HydroBuddiesLogo from '../assets/hydrobuddies-logo.png';
-import {createStaticNavigation, useNavigation} from '@react-navigation/native';
+import {useNavigation} from '@react-navigation/native';
 import CustomButton from '../components/CustomButton.jsx';
 import StyledText from '../components/StyledText.jsx';
 

@@ -7,29 +7,26 @@ import {
   TouchableWithoutFeedback,
   Keyboard,
   Alert,
-} from "react-native";
-import { useState, useRef } from "react";
-import { SafeAreaView } from "react-native-safe-area-context";
-import { Dropdown } from "react-native-element-dropdown";
-import HydroBuddiesLogo from "../../assets/hydrobuddies-logo.png";
-import CustomButton from "../../components/CustomButton.jsx";
-import StyledText from "../../components/StyledText.jsx";
-import AntDesign from "@expo/vector-icons/AntDesign";
-
-import BleComponent from "../../components/BLEComponent.jsx";
+} from 'react-native';
+import {useState, useRef} from 'react';
+import {SafeAreaView} from 'react-native-safe-area-context';
+import {Dropdown} from 'react-native-element-dropdown';
+import HydroBuddiesLogo from '../../assets/hydrobuddies-logo.png';
+import CustomButton from '../../components/CustomButton.jsx';
+import StyledText from '../../components/StyledText.jsx';
 
 const unitOptions = [
-  { label: "m", value: "m" },
-  { label: "ft", value: "ft" },
+  {label: 'm', value: 'm'},
+  {label: 'ft', value: 'ft'},
 ];
 
 const Home = () => {
   const [workoutDistance, setworkoutDistance] = useState({
-    distance: "",
-    units: "m",
+    distance: '',
+    units: 'm',
   });
 
-  const [connectionStatus, setConnectionStatus] = useState("None");
+  const [connectionStatus, setConnectionStatus] = useState('None');
   const [started, setStarted] = useState(false);
   const sendStartSignalRef = useRef(null);
   const sendStopSignalRef = useRef(null);
@@ -54,30 +51,30 @@ const Home = () => {
         </View>
 
         <View className="h-40 w-72 px-5 py-3 rounded-3xl bg-secondary items-center flex">
-          <StyledText
-            text="Device Pair Name:"
-            textStyles="text-2xl text-white"
-          />
+          <StyledText textStyle="text-2xl text-white">
+            Device Pair Name:
+          </StyledText>
+
           <StyledText text={connectionStatus} textStyles="text-xl text-white" />
         </View>
 
-        <BleComponent
+        {/* <BleComponent
           setConnectionStatus={setConnectionStatus}
           sendStartSignalRef={sendStartSignalRef}
           sendStopSignalRef={sendStopSignalRef}
           readDataRef={readDataRef}
           stopReadDataRef={stopReadDataRef}
-        />
+        /> */}
 
         <View className="h-28 w-80 rounded-3xl bg-secondary flex-row">
           <View className="px-2 py-4 border-r border-input_border justify-center items-center flex-1">
             <TextInput
               className="text-4xl h-full w-full text-right text-white font-kavoon"
-              placeholderTextColor={"#C1C1C1"}
+              placeholderTextColor={'#C1C1C1'}
               placeholder="Distance"
               keyboardType="number-pad"
-              onChangeText={(e) => {
-                setworkoutDistance({ ...workoutDistance, distance: e });
+              onChangeText={e => {
+                setworkoutDistance({...workoutDistance, distance: e});
               }}
             />
           </View>
@@ -87,37 +84,37 @@ const Home = () => {
               style={{
                 flex: 1,
                 paddingHorizontal: 15,
-                height: "100%",
+                height: '100%',
               }}
               data={unitOptions}
               maxHeight={150}
               labelField="label"
               valueField="value"
               value={workoutDistance.units}
-              onChange={(item) => {
-                console.log("Selected unit:", item.value);
-                setworkoutDistance((prev) => ({
+              onChange={item => {
+                console.log('Selected unit:', item.value);
+                setworkoutDistance(prev => ({
                   ...prev,
                   units: item.value,
                 }));
               }}
               containerStyle={{
-                backgroundColor: "#332958",
+                backgroundColor: '#332958',
                 borderWidth: 1,
-                borderColor: "#2A224B",
+                borderColor: '#2A224B',
               }}
               itemContainerStyle={{
-                backgroundColor: "#332958",
+                backgroundColor: '#332958',
               }}
               itemTextStyle={{
-                color: "white",
-                fontFamily: "Kavoon_400Regular",
+                color: 'white',
+                fontFamily: 'Kavoon-Regular',
               }}
               selectedTextStyle={{
                 marginBottom: 4,
                 fontSize: 35,
-                color: "white",
-                fontFamily: "Kavoon_400Regular",
+                color: 'white',
+                fontFamily: 'Kavoon-Regular',
               }}
               activeColor="#4E3F92"
             />
@@ -127,21 +124,21 @@ const Home = () => {
         <CustomButton
           title="Start"
           bgColor="bg-green-500"
-          containerStyles={`h-80 w-80 ${started ? "hidden" : ""}`}
+          containerStyles={`h-80 w-80 ${started ? 'hidden' : ''}`}
           rounded="rounded-full"
           textStyles="text-7xl text-white"
           handlePress={() => {
             if (!workoutDistance.distance) {
-              Alert.alert("Error", "Please enter a distance.");
+              Alert.alert('Error', 'Please enter a distance.');
               return;
             }
 
-            console.log("Workout Distance:", workoutDistance);
+            console.log('Workout Distance:', workoutDistance);
 
             if (sendStartSignalRef.current) {
               sendStartSignalRef.current();
             } else {
-              Alert.alert("Error", "BLE device not connected.");
+              Alert.alert('Error', 'BLE device not connected.');
               return;
             }
 
@@ -154,7 +151,7 @@ const Home = () => {
         <CustomButton
           title="Stop"
           bgColor="bg-red-500"
-          containerStyles={`h-80 w-80 ${!started ? "hidden" : ""}`}
+          containerStyles={`h-80 w-80 ${!started ? 'hidden' : ''}`}
           rounded="rounded-full"
           textStyles="text-7xl text-white"
           handlePress={() => {
@@ -163,7 +160,7 @@ const Home = () => {
             if (sendStopSignalRef.current) {
               sendStopSignalRef.current();
             } else {
-              Alert.alert("Error", "BLE device not connected.");
+              Alert.alert('Error', 'BLE device not connected.');
               return;
             }
 

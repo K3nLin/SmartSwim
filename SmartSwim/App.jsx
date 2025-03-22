@@ -3,13 +3,14 @@ import './global.css';
 import {View, Text} from 'react-native';
 
 import {useState, useEffect, StrictMode} from 'react';
-import {loadCustomFonts} from './app/utils/loadCustomFonts.js';
 
 import {NavigationContainer} from '@react-navigation/native';
 import {createStackNavigator} from '@react-navigation/stack';
 
 import LandingScreen from './app/LandingScreen.jsx';
 import SignInScreen from './app/auth/SignIn.jsx';
+import HomeScreen from './app/tabs/Home.jsx';
+
 import StyledText from './components/StyledText.jsx';
 
 const Stack = createStackNavigator();
@@ -27,6 +28,11 @@ export default function App() {
           <Stack.Screen
             name="SignIn"
             component={SignInScreen}
+            options={{headerShown: false}}
+          />
+          <Stack.Screen
+            name="Home"
+            component={HomeScreen}
             options={{headerShown: false}}
           />
         </Stack.Navigator>
