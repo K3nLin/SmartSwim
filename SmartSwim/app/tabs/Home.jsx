@@ -55,7 +55,9 @@ const Home = () => {
             Device Pair Name:
           </StyledText>
 
-          <StyledText text={connectionStatus} textStyles="text-xl text-white" />
+          <StyledText textStyle={'text-xl text-white'}>
+            {connectionStatus}
+          </StyledText>
         </View>
 
         {/* <BleComponent
