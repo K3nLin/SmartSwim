@@ -12,6 +12,9 @@ import {useState, useRef} from 'react';
 import {SafeAreaView} from 'react-native-safe-area-context';
 import {Dropdown} from 'react-native-element-dropdown';
 import HydroBuddiesLogo from '../../assets/hydrobuddies-logo.png';
+
+import BluetoothComponent from '../../components/BluetoothComponent.jsx';
+
 import CustomButton from '../../components/CustomButton.jsx';
 import StyledText from '../../components/StyledText.jsx';
 
@@ -60,13 +63,13 @@ const Home = () => {
           </StyledText>
         </View>
 
-        {/* <BleComponent
+        <BluetoothComponent
           setConnectionStatus={setConnectionStatus}
           sendStartSignalRef={sendStartSignalRef}
           sendStopSignalRef={sendStopSignalRef}
           readDataRef={readDataRef}
           stopReadDataRef={stopReadDataRef}
-        /> */}
+        />
 
         <View className="h-28 w-80 rounded-3xl bg-secondary flex-row">
           <View className="px-2 py-4 border-r border-input_border justify-center items-center flex-1">
