@@ -14,6 +14,8 @@ module.exports = {
       colors: {
         primary: '#4E3F92',
         secondary: '#332958',
+        input_border: '#2A224B',
+        input_field: '#828185',
       },
       fontFamily: {
         kavoon: ['Kavoon-Regular'],

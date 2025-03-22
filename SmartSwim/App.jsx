@@ -19,8 +19,16 @@ export default function App() {
     <StrictMode>
       <NavigationContainer>
         <Stack.Navigator>
-          <Stack.Screen name="Landing" component={LandingScreen} />
-          <Stack.Screen name="SignIn" component={SignInScreen} />
+          <Stack.Screen
+            name="Landing"
+            component={LandingScreen}
+            options={{headerShown: false}}
+          />
+          <Stack.Screen
+            name="SignIn"
+            component={SignInScreen}
+            options={{headerShown: false}}
+          />
         </Stack.Navigator>
       </NavigationContainer>
     </StrictMode>
