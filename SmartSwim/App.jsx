@@ -10,7 +10,7 @@ import {createStackNavigator} from '@react-navigation/stack';
 import LandingScreen from './app/LandingScreen.jsx';
 import SignInScreen from './app/auth/SignIn.jsx';
 import SignUpScreen from './app/auth/SignUp.jsx';
-import HomeScreen from './app/tabs/Home.jsx';
+import TabsNavigator from './app/tabs/TabsNavigator.jsx';
 
 import StyledText from './components/StyledText.jsx';
 
@@ -38,7 +38,7 @@ export default function App() {
           />
           <Stack.Screen
             name="Home"
-            component={HomeScreen}
+            component={TabsNavigator}
             options={{headerShown: false}}
           />
         </Stack.Navigator>

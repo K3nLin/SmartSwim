@@ -1,4 +1,4 @@
-export const BASE_URL = Constants.expoConfig.extra.API_URL;
+// export const BASE_URL = Constants.expoConfig.extra.API_URL;
 
 export const SMALL_FONT = 12;
 export const NORM_FONT = 14;
