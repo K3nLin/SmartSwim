@@ -29,6 +29,16 @@ const Home = () => {
     units: 'm',
   });
 
+  const [processedData, setProcessedData] = useState({
+    totalDistance: {distance: 0, units: 'm'},
+    seaState: 'Calm',
+    strokeCount: 0,
+  });
+
+  const handleProcessedData = data => {
+    setProcessedData(data);
+  };
+
   const [connectionStatus, setConnectionStatus] = useState('None');
   const [started, setStarted] = useState(false);
   const sendStartSignalRef = useRef(null);
@@ -38,7 +48,7 @@ const Home = () => {
 
   return (
     <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
-      <SafeAreaView className="h-full bg-primary items-center justify-between flex-col">
+      <SafeAreaView className="h-full bg-primary items-center justify-between flex-col pb-10">
         <View className="relative h-24 w-full bg-secondary items-center flex-row">
           <View className="absolute h-24 w-24 left-1/2 -translate-x-12 flex items-center justify-center">
             <Image
@@ -64,12 +74,26 @@ const Home = () => {
         </View>
 
         <BluetoothComponent
+          onProcessedData={handleProcessedData}
           setConnectionStatus={setConnectionStatus}
           sendStartSignalRef={sendStartSignalRef}
           sendStopSignalRef={sendStopSignalRef}
           readDataRef={readDataRef}
           stopReadDataRef={stopReadDataRef}
         />
+
+        <View className="bg-secondary p-4 rounded-xl">
+          <StyledText textStyle={'text-white text-2xl text-center'}>
+            Total Distance: {processedData.totalDistance.distance.toFixed(2)}{' '}
+            {processedData.totalDistance.units}
+          </StyledText>
+          <StyledText textStyle={'text-white text-2xl text-center'}>
+            Sea State: {processedData.seaState}
+          </StyledText>
+          <StyledText textStyle={'text-white text-2xl text-center'}>
+            Stroke Count: {processedData.strokeCount}
+          </StyledText>
+        </View>
 
         <View className="h-28 w-80 rounded-3xl bg-secondary flex-row">
           <View className="px-2 py-4 border-r border-input_border justify-center items-center flex-1">
@@ -141,7 +165,7 @@ const Home = () => {
             console.log('Workout Distance:', workoutDistance);
 
             if (sendStartSignalRef.current) {
-              sendStartSignalRef.current();
+              sendStartSignalRef.current(workoutDistance);
             } else {
               Alert.alert('Error', 'BLE device not connected.');
               return;

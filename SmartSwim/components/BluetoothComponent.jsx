@@ -4,8 +4,10 @@ import RNBluetoothClassic, {
   BluetoothDevice,
 } from 'react-native-bluetooth-classic';
 import CustomButton from './CustomButton.jsx';
+import DataProcessor from './DataProcessor.jsx';
 
 const BluetoothComponent = ({
+  onProcessedData,
   setConnectionStatus,
   sendStartSignalRef,
   sendStopSignalRef,
@@ -15,6 +17,7 @@ const BluetoothComponent = ({
   const [device, setDevice] = useState(null);
   const [isConnected, setIsConnected] = useState(false);
   const [receivedData, setReceivedData] = useState([]);
+  const [distanceGoal, setDistanceGoal] = useState({distance: '', units: 'm'});
 
   let dataSubscription = null;
 
@@ -72,12 +75,18 @@ const BluetoothComponent = ({
   };
 
   // Send Start Signal
-  const sendStartSignal = async () => {
+  const sendStartSignal = async distanceGoal => {
     if (!device || !isConnected) {
       Alert.alert('Error', 'Device not connected');
       return;
     }
     try {
+      setDistanceGoal(prev => ({
+        ...prev,
+        distance: distanceGoal.distance,
+        units: distanceGoal.units,
+      }));
+
       await device.write('start\n');
       console.log('Start signal sent!');
       Alert.alert('Success', 'Start signal sent to ESP32.');
@@ -167,6 +176,12 @@ const BluetoothComponent = ({
         textStyles={'text-white'}
         bgColor="bg-green-500"
         handlePress={scanAndConnect}
+      />
+      <DataProcessor
+        onProcessedData={onProcessedData}
+        receivedData={receivedData}
+        distanceGoal={distanceGoal}
+        stopReadHandler={stopReadData}
       />
     </View>
   );
