@@ -6,12 +6,25 @@ const DataProcessor = ({
   receivedData,
   distanceGoal,
   stopReadHandler,
+  stopStatus,
 }) => {
   const [totalDistance, setTotalDistance] = useState(0);
   const [previousCoords, setPreviousCoords] = useState(null);
   const [seaState, setSeaState] = useState('Calm');
   const [strokeCount, setStrokeCount] = useState(0);
   const [stopSent, setStopSent] = useState(false);
+
+  useEffect(() => {
+    console.log('Stop Status Changed:', stopStatus);
+    if (stopStatus) {
+      console.log('Resetting data since stopStatus is true.');
+      setTotalDistance(0);
+      setSeaState('Calm');
+      setStrokeCount(0);
+      setPreviousCoords(null);
+      setStopSent(false);
+    }
+  }, [stopStatus]);
 
   // Haversine formula
   const haversineDistance = (lat1, lon1, lat2, lon2) => {
@@ -30,9 +43,11 @@ const DataProcessor = ({
   };
 
   useEffect(() => {
-    if (receivedData.length === 0 || stopSent) return; // Stop updating if already stopped
+    if (stopStatus || stopSent) return; // Stop updates if already stopped
 
     const latestData = receivedData[receivedData.length - 1];
+
+    if (!latestData) return;
 
     if (latestData.position) {
       const {position} = latestData;
@@ -53,7 +68,6 @@ const DataProcessor = ({
           `Total Distance Traveled: ${newTotalDistance}\nDistance Goal: ${goalInMeters}`,
         );
 
-        // Check if the goal is reached
         if (newTotalDistance >= goalInMeters) {
           if (!stopSent) {
             console.log('Stopping workout - Goal reached!');
@@ -71,21 +85,20 @@ const DataProcessor = ({
         acceleration[0] ** 2 + acceleration[1] ** 2 + acceleration[2] ** 2,
       );
 
-      // Estimate sea state
-      if (magnitude > 20) {
-        setSeaState('Very Rough');
-      } else if (magnitude > 15) {
-        setSeaState('Rough');
-      } else if (magnitude > 10) {
-        setSeaState('Moderate');
-      } else {
-        setSeaState('Calm');
-      }
+      setSeaState(
+        magnitude > 20
+          ? 'Very Rough'
+          : magnitude > 15
+          ? 'Rough'
+          : magnitude > 10
+          ? 'Moderate'
+          : 'Calm',
+      );
 
-      // Count swim strokes based on acceleration spikes
       if (magnitude > 12) {
         setStrokeCount(prev => prev + 1);
       }
+
       console.log(`MAGNITUDE: ${magnitude}\n STROKECOUNT: ${strokeCount}`);
     }
 
@@ -94,12 +107,14 @@ const DataProcessor = ({
         ? [totalDistance * 3.28084, 'ft']
         : [totalDistance, 'm'];
 
+    console.log(distance, units);
+
     onProcessedData?.({
       totalDistance: {distance, units},
       seaState,
       strokeCount,
     });
-  }, [receivedData, distanceGoal]);
+  }, [receivedData, distanceGoal, stopStatus]);
 
   return null;
 };

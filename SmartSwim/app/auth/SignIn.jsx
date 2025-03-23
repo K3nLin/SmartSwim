@@ -1,4 +1,5 @@
 import {View, Text, Image, TouchableOpacity, Alert} from 'react-native';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 import {useState} from 'react';
 import {useNavigation} from '@react-navigation/native';
 import {SafeAreaView} from 'react-native-safe-area-context';
@@ -17,12 +18,22 @@ const SignIn = () => {
 
   const [isSubmitting, setIsSubmitting] = useState(false);
 
+  const storeToken = async token => {
+    try {
+      await AsyncStorage.setItem('authToken', token);
+    } catch (error) {
+      console.error('Error storing token:', error);
+    }
+  };
+
   const submit = async () => {
     try {
       if (!form.email || !form.password)
         throw new Error('Please fill out all fields!');
 
       console.log(`${BASE_URL}/api/login`);
+
+      setIsSubmitting(true);
 
       const result = await fetch(`${BASE_URL}/auth/login`, {
         method: 'POST',
@@ -32,11 +43,11 @@ const SignIn = () => {
         body: JSON.stringify(form),
       });
 
+      const res = await result.json();
       if (!result.ok) {
-        const res = await result.json();
         throw new Error(res.msg || 'Failed to Login!');
       }
-
+      await storeToken(res.token);
       navigation.replace('Home');
     } catch (err) {
       Alert.alert(err.message, 'Please Try Again!');
@@ -77,6 +88,7 @@ const SignIn = () => {
         handlePress={submit}
         containerStyles={'py-6 mt-5'}
         textStyles={'text-lg text-white'}
+        disabled={isSubmitting}
       />
 
       <View className="py-5">

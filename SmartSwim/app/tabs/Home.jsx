@@ -8,6 +8,7 @@ import {
   Keyboard,
   Alert,
 } from 'react-native';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 import {useState, useRef} from 'react';
 import {SafeAreaView} from 'react-native-safe-area-context';
 import {Dropdown} from 'react-native-element-dropdown';
@@ -17,6 +18,7 @@ import BluetoothComponent from '../../components/BluetoothComponent.jsx';
 
 import CustomButton from '../../components/CustomButton.jsx';
 import StyledText from '../../components/StyledText.jsx';
+import {BASE_URL} from '../config.js';
 
 const unitOptions = [
   {label: 'm', value: 'm'},
@@ -45,6 +47,53 @@ const Home = () => {
   const sendStopSignalRef = useRef(null);
   const readDataRef = useRef(null);
   const stopReadDataRef = useRef(null);
+  const [receivedData, setReceivedData] = useState([]);
+
+  const getToken = async () => {
+    try {
+      return await AsyncStorage.getItem('authToken');
+    } catch (error) {
+      console.error('Error retrieving token:', error);
+      return null;
+    }
+  };
+
+  const storeWorkoutData = async () => {
+    const token = await getToken();
+
+    if (!token) {
+      Alert.alert('Error', 'User not authenticated');
+      return;
+    }
+
+    try {
+      const response = await fetch(`${BASE_URL}/auth/tabs/workouts`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          Authorization: `Bearer ${token}`,
+        },
+        body: JSON.stringify({
+          durationSeconds: processedData.durationSeconds,
+          distance: processedData.totalDistance.distance,
+          strokeCount: processedData.strokeCount,
+          seaState: processedData.seaState,
+          rawData: receivedData, // Raw sensor data from BluetoothComponent
+        }),
+      });
+
+      const data = await response.json();
+      console.log('Workout saved:', data);
+    } catch (error) {
+      console.error('Error saving workout:', error);
+    }
+
+    setProcessedData({
+      totalDistance: {distance: 0, units: 'm'},
+      seaState: 'Calm',
+      strokeCount: 0,
+    });
+  };
 
   return (
     <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
@@ -80,6 +129,9 @@ const Home = () => {
           sendStopSignalRef={sendStopSignalRef}
           readDataRef={readDataRef}
           stopReadDataRef={stopReadDataRef}
+          onStopWorkout={storeWorkoutData}
+          onSetReceivedData={setReceivedData}
+          receivedData={receivedData}
         />
 
         <View className="bg-secondary p-4 rounded-xl">

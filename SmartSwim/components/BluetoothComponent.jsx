@@ -13,11 +13,14 @@ const BluetoothComponent = ({
   sendStopSignalRef,
   readDataRef,
   stopReadDataRef,
+  onStopWorkout,
+  onSetReceivedData,
+  receivedData,
 }) => {
   const [device, setDevice] = useState(null);
   const [isConnected, setIsConnected] = useState(false);
-  const [receivedData, setReceivedData] = useState([]);
   const [distanceGoal, setDistanceGoal] = useState({distance: '', units: 'm'});
+  const [isStopped, setIsStopped] = useState(false);
 
   let dataSubscription = null;
 
@@ -106,6 +109,11 @@ const BluetoothComponent = ({
       await device.write('stop\n');
       console.log('Stop signal sent!');
       Alert.alert('Success', 'Stop signal sent to ESP32.');
+
+      if (onStopWorkout) {
+        onStopWorkout();
+      }
+      onSetReceivedData([]);
     } catch (error) {
       console.error('Write error:', error);
       Alert.alert('Error', 'Failed to send stop signal.');
@@ -132,7 +140,7 @@ const BluetoothComponent = ({
 
         if (isValidJSON(rawData)) {
           const jsonData = JSON.parse(rawData);
-          setReceivedData(prev => [...prev, jsonData]);
+          onSetReceivedData(prev => [...prev, jsonData]);
           console.log('Parsed JSON:', jsonData);
         } else {
           console.warn('Received non-JSON data:', rawData);
@@ -182,6 +190,7 @@ const BluetoothComponent = ({
         receivedData={receivedData}
         distanceGoal={distanceGoal}
         stopReadHandler={stopReadData}
+        stopStatus={isStopped}
       />
     </View>
   );
