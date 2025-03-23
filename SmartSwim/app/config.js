@@ -1,4 +1,6 @@
-// export const BASE_URL = Constants.expoConfig.extra.API_URL;
+import {API_URL} from '@env';
+
+export const BASE_URL = API_URL;
 
 export const SMALL_FONT = 12;
 export const NORM_FONT = 14;

@@ -25,6 +25,8 @@ const SignUp = () => {
 
       console.log(`${BASE_URL}/auth/register`);
 
+      console.log(form);
+
       const result = await fetch(`${BASE_URL}/auth/register`, {
         method: 'POST',
         headers: {
@@ -33,6 +35,8 @@ const SignUp = () => {
         body: JSON.stringify(form),
       });
 
+      console.log(result);
+
       if (!result.ok) {
         console.log('res not ok');
         const res = await result.json();
@@ -40,7 +44,7 @@ const SignUp = () => {
       }
 
       Alert.alert('Registration Successful!');
-      navigation.navigate('sign-in');
+      navigation.replace('SignIn');
     } catch (err) {
       console.log('Signup Error!');
       Alert.alert(err.message, 'Try Again!');
