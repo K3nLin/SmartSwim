@@ -28,7 +28,9 @@ const WorkoutInstance = ({workoutDate, distance, seaState, strokeCount}) => {
         {formatDate(workoutDate)}
       </StyledText>
       <StyledText
-        textStyle={'text-white text-2xl'}>{`${distance} m`}</StyledText>
+        textStyle={
+          'text-white text-2xl'
+        }>{`Total Distance: ${distance} m`}</StyledText>
       <StyledText
         textStyle={'text-white text-2xl'}>{`${seaState} sea`}</StyledText>
       <StyledText
