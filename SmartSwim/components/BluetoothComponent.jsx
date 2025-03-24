@@ -1,8 +1,15 @@
 import React, {useEffect, useState} from 'react';
-import {View, Alert, PermissionsAndroid, Platform} from 'react-native';
+import {
+  View,
+  Alert,
+  PermissionsAndroid,
+  Platform,
+  Vibration,
+} from 'react-native';
 import RNBluetoothClassic, {
   BluetoothDevice,
 } from 'react-native-bluetooth-classic';
+import Sound from 'react-native-sound';
 import CustomButton from './CustomButton.jsx';
 import DataProcessor from './DataProcessor.jsx';
 
@@ -110,6 +117,31 @@ const BluetoothComponent = ({
       await device.write('stop\n');
       console.log('Stop signal sent!');
       Alert.alert('Success', 'Stop signal sent to ESP32.');
+
+      Vibration.vibrate(3000);
+
+      const alarmSound = new Sound('alarm.wav', Sound.MAIN_BUNDLE, error => {
+        if (error) {
+          console.log('Error loading sound:', error);
+          return;
+        }
+
+        let playCount = 0;
+        const playAlarm = () => {
+          if (playCount < 3) {
+            alarmSound.play(success => {
+              if (success) {
+                playCount++;
+                playAlarm(); // Play again if not finished 3 times
+              } else {
+                console.log('Playback failed');
+              }
+            });
+          }
+        };
+
+        playAlarm(); // Start playing
+      });
 
       if (onStopWorkout) {
         onStopWorkout();
