@@ -93,6 +93,7 @@ const BluetoothComponent = ({
       await device.write('start\n');
       console.log('Start signal sent!');
       Alert.alert('Success', 'Start signal sent to ESP32.');
+      setIsStopped(false);
     } catch (error) {
       console.error('Write error:', error);
       Alert.alert('Error', 'Failed to send start signal.');
@@ -114,6 +115,7 @@ const BluetoothComponent = ({
         onStopWorkout();
       }
       onSetReceivedData([]);
+      setIsStopped(true);
     } catch (error) {
       console.error('Write error:', error);
       Alert.alert('Error', 'Failed to send stop signal.');

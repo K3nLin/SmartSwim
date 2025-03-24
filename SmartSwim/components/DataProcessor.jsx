@@ -43,7 +43,7 @@ const DataProcessor = ({
   };
 
   useEffect(() => {
-    if (stopStatus || stopSent) return; // Stop updates if already stopped
+    if (stopStatus) return; // Stop updates if already stopped
 
     const latestData = receivedData[receivedData.length - 1];
 
@@ -114,7 +114,7 @@ const DataProcessor = ({
       seaState,
       strokeCount,
     });
-  }, [receivedData, distanceGoal, stopStatus]);
+  }, [receivedData, distanceGoal]);
 
   return null;
 };
