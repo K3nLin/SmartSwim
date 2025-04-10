@@ -7,6 +7,7 @@ const WorkoutSchema = new mongoose.Schema({
   distance: {type: Number},
   strokeCount: {type: Number},
   seaState: {type: String},
+  temperature: {type: Number},
 
   rawData: [
     {

@@ -107,7 +107,7 @@ const DataProcessor = ({
           : 'Calm',
       );
 
-      if (magnitude > 12) {
+      if (magnitude > 10) {
         setStrokeCount(prev => prev + 1);
       }
 
