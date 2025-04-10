@@ -23,6 +23,7 @@ const BluetoothComponent = ({
   onStopWorkout,
   onSetReceivedData,
   receivedData,
+  setIsStartedUI,
 }) => {
   const [device, setDevice] = useState(null);
   const [isConnected, setIsConnected] = useState(false);
@@ -58,7 +59,6 @@ const BluetoothComponent = ({
     }
   };
 
-  // Scan and connect to ESP32
   const scanAndConnect = async () => {
     try {
       const pairedDevices = await RNBluetoothClassic.getBondedDevices();
@@ -84,43 +84,58 @@ const BluetoothComponent = ({
     }
   };
 
-  // Send Start Signal
   const sendStartSignal = async distanceGoal => {
     if (!device || !isConnected) {
       Alert.alert('Error', 'Device not connected');
       return;
     }
     try {
-      setDistanceGoal(prev => ({
-        ...prev,
+      setDistanceGoal({
         distance: distanceGoal.distance,
         units: distanceGoal.units,
-      }));
+      });
 
       await device.write('start\n');
       console.log('Start signal sent!');
       Alert.alert('Success', 'Start signal sent to ESP32.');
       setIsStopped(false);
+      setIsStartedUI(true);
     } catch (error) {
       console.error('Write error:', error);
       Alert.alert('Error', 'Failed to send start signal.');
     }
   };
 
-  // Send Stop Signal
-  const sendStopSignal = async () => {
-    if (!device || !isConnected) {
-      Alert.alert('Error', 'Device not connected');
-      return;
-    }
-    try {
-      await device.write('stop\n');
-      console.log('Stop signal sent!');
-      Alert.alert('Success', 'Stop signal sent to ESP32.');
+  const playStopAlarm = () => {
+    const alarmSound = new Sound('alarm.wav', Sound.MAIN_BUNDLE, error => {
+      if (error) {
+        console.log('Error loading sound:', error);
+        return;
+      }
 
-      Vibration.vibrate(3000);
+      let playCount = 0;
+      const playAlarm = () => {
+        if (playCount < 3) {
+          alarmSound.play(success => {
+            if (success) {
+              playCount++;
+              playAlarm();
+            } else {
+              console.log('Playback failed');
+            }
+          });
+        }
+      };
 
-      const alarmSound = new Sound('alarm.wav', Sound.MAIN_BUNDLE, error => {
+      playAlarm();
+    });
+  };
+
+  const playHalfAlarm = () => {
+    const alarmSound = new Sound(
+      'halfwayalarm.wav',
+      Sound.MAIN_BUNDLE,
+      error => {
         if (error) {
           console.log('Error loading sound:', error);
           return;
@@ -128,11 +143,11 @@ const BluetoothComponent = ({
 
         let playCount = 0;
         const playAlarm = () => {
-          if (playCount < 3) {
+          if (playCount < 2) {
             alarmSound.play(success => {
               if (success) {
                 playCount++;
-                playAlarm(); // Play again if not finished 3 times
+                playAlarm();
               } else {
                 console.log('Playback failed');
               }
@@ -140,21 +155,43 @@ const BluetoothComponent = ({
           }
         };
 
-        playAlarm(); // Start playing
-      });
-
-      if (onStopWorkout) {
-        onStopWorkout();
-      }
-      onSetReceivedData([]);
-      setIsStopped(true);
-    } catch (error) {
-      console.error('Write error:', error);
-      Alert.alert('Error', 'Failed to send stop signal.');
-    }
+        playAlarm();
+      },
+    );
   };
 
-  // Read Data from ESP32
+  const handleStopWorkout = async (source = 'user') => {
+    if (!device || !isConnected) {
+      Alert.alert('Error', 'Device not connected');
+      return;
+    }
+
+    try {
+      //  Send stop signal to ESP32 in ALL cases
+      await device.write('stop\n');
+      console.log('Stop signal sent!');
+
+      playStopAlarm();
+
+      if (source === 'user') {
+        Alert.alert('Success', 'Stop signal sent to ESP32.');
+      }
+    } catch (err) {
+      console.error('Error sending stop signal:', err);
+    }
+
+    if (onStopWorkout) {
+      onStopWorkout(); // Save workout
+    }
+
+    onSetReceivedData([]);
+    setIsStopped(true);
+    setIsStartedUI(false);
+  };
+
+  const sendStopSignal = async () => {
+    await handleStopWorkout('user');
+  };
 
   const readData = async () => {
     if (!device || !isConnected) {
@@ -185,7 +222,6 @@ const BluetoothComponent = ({
     }
   };
 
-  // JSON validation
   const isValidJSON = str => {
     try {
       JSON.parse(str);
@@ -195,8 +231,10 @@ const BluetoothComponent = ({
     }
   };
 
-  // Stop Reading Data
   const stopReadData = () => {
+    playStopAlarm();
+    handleStopWorkout('auto');
+
     if (dataSubscription) {
       dataSubscription.remove();
       dataSubscription = null;
@@ -225,6 +263,7 @@ const BluetoothComponent = ({
         distanceGoal={distanceGoal}
         stopReadHandler={stopReadData}
         stopStatus={isStopped}
+        onHalfway={playHalfAlarm}
       />
     </View>
   );

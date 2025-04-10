@@ -7,12 +7,14 @@ const DataProcessor = ({
   distanceGoal,
   stopReadHandler,
   stopStatus,
+  onHalfway,
 }) => {
   const [totalDistance, setTotalDistance] = useState(0);
   const [previousCoords, setPreviousCoords] = useState(null);
   const [seaState, setSeaState] = useState('Calm');
   const [strokeCount, setStrokeCount] = useState(0);
   const [stopSent, setStopSent] = useState(false);
+  const [halfAudioPlayed, setHalfAudioPlayed] = useState(false);
 
   useEffect(() => {
     console.log('Stop Status Changed:', stopStatus);
@@ -23,6 +25,7 @@ const DataProcessor = ({
       setStrokeCount(0);
       setPreviousCoords(null);
       setStopSent(false);
+      setHalfAudioPlayed(false);
     }
   }, [stopStatus]);
 
@@ -56,17 +59,26 @@ const DataProcessor = ({
       if (previousCoords) {
         const [prevLat, prevLon] = previousCoords;
         const distance = haversineDistance(prevLat, prevLon, lat, lon);
+        console.log('USER INPUT DISTANCE', distanceGoal);
+        console.log(Number(distanceGoal.distance));
+
         const goalInMeters =
           distanceGoal.units === 'ft'
-            ? distanceGoal.value / 3.28084
-            : distanceGoal.value;
+            ? Number(distanceGoal.distance) / 3.28084
+            : Number(distanceGoal.distance);
 
         const newTotalDistance = totalDistance + distance;
-        setTotalDistance(newTotalDistance);
+        setTotalDistance(prev => prev + distance);
 
         console.log(
           `Total Distance Traveled: ${newTotalDistance}\nDistance Goal: ${goalInMeters}`,
         );
+
+        if (!halfAudioPlayed && newTotalDistance >= goalInMeters / 2) {
+          console.log('Playing halfway audio');
+          onHalfway();
+          setHalfAudioPlayed(true);
+        }
 
         if (newTotalDistance >= goalInMeters) {
           if (!stopSent) {

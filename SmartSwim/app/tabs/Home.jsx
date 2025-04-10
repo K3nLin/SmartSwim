@@ -43,6 +43,7 @@ const Home = () => {
 
   const [connectionStatus, setConnectionStatus] = useState('None');
   const [started, setStarted] = useState(false);
+  const [isStartedUI, setIsStartedUI] = useState(false);
   const sendStartSignalRef = useRef(null);
   const sendStopSignalRef = useRef(null);
   const readDataRef = useRef(null);
@@ -132,6 +133,7 @@ const Home = () => {
           onStopWorkout={storeWorkoutData}
           onSetReceivedData={setReceivedData}
           receivedData={receivedData}
+          setIsStartedUI={setIsStartedUI}
         />
 
         <View className="bg-secondary p-4 rounded-xl">
@@ -205,7 +207,7 @@ const Home = () => {
         <CustomButton
           title="Start"
           bgColor="bg-green-500"
-          containerStyles={`h-80 w-80 ${started ? 'hidden' : ''}`}
+          containerStyles={`h-80 w-80 ${isStartedUI ? 'hidden' : ''}`}
           rounded="rounded-full"
           textStyles="text-7xl text-white"
           handlePress={() => {
@@ -216,23 +218,29 @@ const Home = () => {
 
             console.log('Workout Distance:', workoutDistance);
 
-            if (sendStartSignalRef.current) {
-              sendStartSignalRef.current(workoutDistance);
-            } else {
-              Alert.alert('Error', 'BLE device not connected.');
-              return;
+            try {
+              if (sendStartSignalRef.current) {
+                sendStartSignalRef.current(workoutDistance);
+              } else {
+                Alert.alert('Error', 'BLE device not connected.');
+                return;
+              }
+
+              console.log('SettingIsStopped');
+              setStarted(true);
+              setIsStartedUI(true);
+
+              readDataRef.current?.();
+            } catch (e) {
+              console.error('Error in start signal:', e);
             }
-
-            setStarted(true);
-
-            readDataRef.current?.();
           }}
         />
 
         <CustomButton
           title="Stop"
           bgColor="bg-red-500"
-          containerStyles={`h-80 w-80 ${!started ? 'hidden' : ''}`}
+          containerStyles={`h-80 w-80 ${!isStartedUI ? 'hidden' : ''}`}
           rounded="rounded-full"
           textStyles="text-7xl text-white"
           handlePress={() => {
@@ -247,7 +255,7 @@ const Home = () => {
 
             setStarted(false);
 
-            stopReadDataRef.current?.();
+            // stopReadDataRef.current?.();
           }}
         />
       </SafeAreaView>
