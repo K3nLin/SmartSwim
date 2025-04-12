@@ -26,6 +26,13 @@ const unitOptions = [
 ];
 
 const Home = () => {
+  const labelMap = {
+    totalDistance: 'Total Distance',
+    seaState: 'Sea State',
+    temperature: 'Temperature',
+    strokeCount: 'Stroke Count',
+  };
+
   const [workoutDistance, setworkoutDistance] = useState({
     distance: '',
     units: 'm',
@@ -34,6 +41,7 @@ const Home = () => {
   const [processedData, setProcessedData] = useState({
     totalDistance: {distance: 0, units: 'm'},
     seaState: 'Calm',
+    temperature: 0,
     strokeCount: 0,
   });
 
@@ -79,6 +87,7 @@ const Home = () => {
           distance: processedData.totalDistance.distance,
           strokeCount: processedData.strokeCount,
           seaState: processedData.seaState,
+          temperature: processedData.temperature,
           rawData: receivedData, // Raw sensor data from BluetoothComponent
         }),
       });
@@ -92,6 +101,7 @@ const Home = () => {
     setProcessedData({
       totalDistance: {distance: 0, units: 'm'},
       seaState: 'Calm',
+      temperature: 0,
       strokeCount: 0,
     });
   };
@@ -108,7 +118,7 @@ const Home = () => {
             />
           </View>
 
-          <View className="absolute right-3 h-20 w-20 rounded-full bg-white">
+          <View className="absolute right-3 h-20 w-20 rounded-full bg-white opacity-0">
             <Image />
           </View>
         </View>
@@ -137,16 +147,25 @@ const Home = () => {
         />
 
         <View className="bg-secondary p-4 rounded-xl">
-          <StyledText textStyle={'text-white text-2xl text-center'}>
-            Total Distance: {processedData.totalDistance.distance.toFixed(2)}{' '}
-            {processedData.totalDistance.units}
-          </StyledText>
-          <StyledText textStyle={'text-white text-2xl text-center'}>
-            Sea State: {processedData.seaState}
-          </StyledText>
-          <StyledText textStyle={'text-white text-2xl text-center'}>
-            Stroke Count: {processedData.strokeCount}
-          </StyledText>
+          {Object.entries(processedData).map(([key, val]) => {
+            let displayVal = val;
+
+            if (key === 'totalDistance') {
+              displayVal = `${val.distance.toFixed(2)} ${val.units}`;
+            }
+
+            if (key === 'temperature') {
+              displayVal = `${val} °F`;
+            }
+
+            return (
+              <StyledText
+                key={key}
+                textStyle={'text-white text-2xl text-center'}>
+                {labelMap[key]}: {displayVal}
+              </StyledText>
+            );
+          })}
         </View>
 
         <View className="h-28 w-80 rounded-3xl bg-secondary flex-row">
@@ -254,8 +273,6 @@ const Home = () => {
             }
 
             setStarted(false);
-
-            // stopReadDataRef.current?.();
           }}
         />
       </SafeAreaView>

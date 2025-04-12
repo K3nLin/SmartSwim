@@ -19,24 +19,30 @@ const formatDate = dateString => {
   }).format(date);
 };
 
-const WorkoutInstance = ({workoutDate, distance, seaState, strokeCount}) => {
-  console.log(workoutDate, distance, seaState, strokeCount);
-
+const WorkoutInstance = ({
+  workoutDate,
+  distance,
+  seaState,
+  temperature,
+  strokeCount,
+}) => {
   return (
     <View className="bg-secondary flex items-center w-1/2 rounded-2xl">
       <StyledText textStyle={'text-white text-2xl'}>
         {formatDate(workoutDate)}
       </StyledText>
-      <StyledText
-        textStyle={
-          'text-white text-2xl'
-        }>{`Total Distance: ${distance} m`}</StyledText>
-      <StyledText
-        textStyle={'text-white text-2xl'}>{`${seaState} sea`}</StyledText>
-      <StyledText
-        textStyle={
-          'text-white text-2xl'
-        }>{`Strokes: ${strokeCount}`}</StyledText>
+      <StyledText textStyle={'text-white text-2xl'}>
+        {`Total Distance: ${distance} m`}
+      </StyledText>
+      <StyledText textStyle={'text-white text-2xl'}>
+        {`${seaState} sea`}
+      </StyledText>
+      <StyledText textStyle={'text-white text-2xl'}>
+        {temperature} °F
+      </StyledText>
+      <StyledText textStyle={'text-white text-2xl'}>
+        {`Strokes: ${strokeCount}`}
+      </StyledText>
     </View>
   );
 };

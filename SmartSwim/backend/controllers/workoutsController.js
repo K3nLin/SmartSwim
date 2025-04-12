@@ -2,8 +2,14 @@ const Workout = require('../models/Workout');
 
 exports.createWorkout = async (req, res) => {
   try {
-    const {durationSeconds, distance, strokeCount, seaState, rawData} =
-      req.body;
+    const {
+      durationSeconds,
+      distance,
+      strokeCount,
+      seaState,
+      temperature,
+      rawData,
+    } = req.body;
     const userId = req.user.userId;
 
     const newWorkout = new Workout({
@@ -12,6 +18,7 @@ exports.createWorkout = async (req, res) => {
       distance,
       strokeCount,
       seaState,
+      temperature,
       rawData,
     });
 

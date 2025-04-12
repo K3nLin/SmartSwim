@@ -44,7 +44,6 @@ const WorkoutHistory = () => {
       }
 
       const data = await res.json();
-      console.log(data);
       setWorkouts(data);
     } catch (err) {
       console.error('Error getting workout data', err);
@@ -74,6 +73,7 @@ const WorkoutHistory = () => {
               workoutDate={workout.workoutDate}
               distance={workout.distance}
               seaState={workout.seaState}
+              temperature={workout.temperature}
               strokeCount={workout.strokeCount}
             />
           ))

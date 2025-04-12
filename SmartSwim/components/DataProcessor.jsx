@@ -12,16 +12,16 @@ const DataProcessor = ({
   const [totalDistance, setTotalDistance] = useState(0);
   const [previousCoords, setPreviousCoords] = useState(null);
   const [seaState, setSeaState] = useState('Calm');
+  const [temperature, setTemperature] = useState(0);
   const [strokeCount, setStrokeCount] = useState(0);
   const [stopSent, setStopSent] = useState(false);
   const [halfAudioPlayed, setHalfAudioPlayed] = useState(false);
 
   useEffect(() => {
-    console.log('Stop Status Changed:', stopStatus);
     if (stopStatus) {
-      console.log('Resetting data since stopStatus is true.');
       setTotalDistance(0);
       setSeaState('Calm');
+      setTemperature(0);
       setStrokeCount(0);
       setPreviousCoords(null);
       setStopSent(false);
@@ -60,7 +60,6 @@ const DataProcessor = ({
         const [prevLat, prevLon] = previousCoords;
         const distance = haversineDistance(prevLat, prevLon, lat, lon);
         console.log('USER INPUT DISTANCE', distanceGoal);
-        console.log(Number(distanceGoal.distance));
 
         const goalInMeters =
           distanceGoal.units === 'ft'
@@ -114,16 +113,19 @@ const DataProcessor = ({
       console.log(`MAGNITUDE: ${magnitude}\n STROKECOUNT: ${strokeCount}`);
     }
 
+    if (latestData.temperature) {
+      setTemperature(latestData.temperature);
+    }
+
     const [distance, units] =
       distanceGoal.units === 'ft'
         ? [totalDistance * 3.28084, 'ft']
         : [totalDistance, 'm'];
 
-    console.log(distance, units);
-
     onProcessedData?.({
       totalDistance: {distance, units},
       seaState,
+      temperature,
       strokeCount,
     });
   }, [receivedData, distanceGoal]);
