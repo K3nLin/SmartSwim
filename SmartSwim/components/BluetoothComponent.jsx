@@ -1,4 +1,4 @@
-import React, {useEffect, useState} from 'react';
+import React, {useEffect, useState, useRef} from 'react';
 import {
   View,
   Alert,
@@ -30,12 +30,13 @@ const BluetoothComponent = ({
   const [distanceGoal, setDistanceGoal] = useState({distance: '', units: 'm'});
   const [isStopped, setIsStopped] = useState(false);
 
-  let dataSubscription = null;
+  const dataSubscriptionRef = useRef(null);
 
   useEffect(() => {
     return () => {
-      if (dataSubscription) {
-        dataSubscription.remove();
+      if (dataSubscriptionRef.current) {
+        dataSubscriptionRef.current.remove();
+        dataSubscriptionRef.current = null;
         console.log('Cleaned up Bluetooth listener on unmount.');
       }
     };
@@ -44,6 +45,14 @@ const BluetoothComponent = ({
   useEffect(() => {
     requestPermissions();
   }, []);
+
+  function clearSubscription() {
+    if (dataSubscriptionRef.current) {
+      dataSubscriptionRef.current.remove();
+      dataSubscriptionRef.current = null;
+      console.log('Stopped reading data.');
+    }
+  }
 
   const requestPermissions = async () => {
     if (Platform.OS === 'android' && Platform.Version >= 23) {
@@ -184,6 +193,7 @@ const BluetoothComponent = ({
       onStopWorkout(); // Save workout
     }
 
+    clearSubscription();
     onSetReceivedData([]);
     setIsStopped(true);
     setIsStartedUI(false);
@@ -199,13 +209,14 @@ const BluetoothComponent = ({
       return;
     }
 
-    if (dataSubscription) {
+    // Prevent duplicate listeners
+    if (dataSubscriptionRef.current) {
       console.warn('Already listening for data');
       return;
     }
 
     try {
-      dataSubscription = device.onDataReceived(event => {
+      dataSubscriptionRef.current = device.onDataReceived(event => {
         const rawData = event.data.trim();
         console.log('Raw Received Data:', rawData);
 
@@ -234,12 +245,7 @@ const BluetoothComponent = ({
   const stopReadData = () => {
     playStopAlarm();
     handleStopWorkout('auto');
-
-    if (dataSubscription) {
-      dataSubscription.remove();
-      dataSubscription = null;
-      console.log('Stopped reading data.');
-    }
+    clearSubscription();
   };
 
   // Assign function references for external calls

@@ -62,7 +62,7 @@ const WorkoutHistory = () => {
       <ScrollView
         className="flex"
         contentContainerStyle={{
-          height: '100%',
+          paddingBottom: 20,
           alignItems: 'center',
           rowGap: 14,
         }}>
