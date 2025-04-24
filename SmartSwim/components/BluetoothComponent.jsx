@@ -152,7 +152,7 @@ const BluetoothComponent = ({
 
         let playCount = 0;
         const playAlarm = () => {
-          if (playCount < 2) {
+          if (playCount < 4) {
             alarmSound.play(success => {
               if (success) {
                 playCount++;

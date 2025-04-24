@@ -32,7 +32,7 @@ const WorkoutInstance = ({
         {formatDate(workoutDate)}
       </StyledText>
       <StyledText textStyle={'text-white text-2xl'}>
-        {`Total Distance: ${distance} m`}
+        {`Total Distance: ${Number(distance).toFixed(2)} m`}
       </StyledText>
       <StyledText textStyle={'text-white text-2xl'}>
         {`${seaState} sea`}
