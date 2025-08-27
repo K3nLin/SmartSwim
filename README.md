@@ -49,7 +49,7 @@ Bluetooth/Wi-Fi Sync – Transfers buoy data to the mobile app in real-time
 </p>
 
 <p float="left">
-  <img src="images/Poster.png" alt="Poster" width="300"/>
+  <img src="images/Poster.png" alt="Poster" width="900"/>
 </p>
 
 <p float="left">
