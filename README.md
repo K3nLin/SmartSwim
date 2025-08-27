@@ -53,7 +53,7 @@ Bluetooth/Wi-Fi Sync – Transfers buoy data to the mobile app in real-time
 </p>
 
 <p float="left">
-  <img src="images/Isometric_View.HEIC" alt="Isometric View" width="300"/>
-  <img src="images/Top_View_wCase.HEIC" alt="Top View with Case" width="300"/>
-  <img src="images/Top_View_woCase.HEIC" alt="Top View without Case" width="300"/>
+  <img src="images/Isometric_View.jpg" alt="Isometric View" width="300"/>
+  <img src="images/Top_View_wCase.jpg" alt="Top View with Case" width="300"/>
+  <img src="images/Top_View_woCase.jpg" alt="Top View without Case" width="300"/>
 </p>
