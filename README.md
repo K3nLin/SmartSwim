@@ -34,14 +34,27 @@ Workout History – Stores past swim sessions for review
 
 Bluetooth/Wi-Fi Sync – Transfers buoy data to the mobile app in real-time
 
-![Landing Page](images/LandingPage.jpg)  
-![Login Page](images/LoginPage.jpg)  
-![Signup Page](images/SignupPage.jpg)  
-![Home Page](images/HomePage.jpg)  
-![Home Page After Connect](images/HomePageAfterConnect.jpg)  
-![History Page](images/HistoryPage.jpg)  
-![Poster](images/Poster.png)  
-![Isometric View](images/Isometric_View.jpg)  
-![Top View with Case](images/Top_View_wCase.jpg)  
-![Top View without Case](images/Top_View_woCase.jpg)  
+## 🖼️ Project Images
+
+<p float="left">
+  <img src="images/LandingPage.jpg" alt="Landing Page" width="250"/>
+  <img src="images/LoginPage.jpg" alt="Login Page" width="250"/>
+  <img src="images/SignupPage.jpg" alt="Signup Page" width="250"/>
+</p>
+
+<p float="left">
+  <img src="images/HomePage.jpg" alt="Home Page" width="250"/>
+  <img src="images/HomePageAfterConnect.jpg" alt="Home Page After Connect" width="250"/>
+  <img src="images/HistoryPage.jpg" alt="History Page" width="250"/>
+</p>
+
+<p float="left">
+  <img src="images/Poster.png" alt="Poster" width="300"/>
+</p>
+
+<p float="left">
+  <img src="images/Isometric_View.jpg" alt="Isometric View" width="300"/>
+  <img src="images/Top_View_wCase.jpg" alt="Top View with Case" width="300"/>
+  <img src="images/Top_View_woCase.jpg" alt="Top View without Case" width="300"/>
+</p>
 
