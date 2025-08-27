@@ -1,4 +1,5 @@
 Smart Swim Buoy Mobile App
+
 📖 Project Overview
 
 This project is a smart swim buoy system paired with a mobile application. The buoy is designed to track swimming workouts by recording GPS position, estimating sea state, and measuring water temperature, along with optional data such as stroke count. It helps swimmers monitor workout progress and provides turn-back alerts once the target distance is reached.
