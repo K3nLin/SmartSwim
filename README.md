@@ -33,3 +33,15 @@ Progress Indicator – Notifies swimmers when workout goals are met
 Workout History – Stores past swim sessions for review
 
 Bluetooth/Wi-Fi Sync – Transfers buoy data to the mobile app in real-time
+
+![Landing Page](images/LandingPage.jpg)  
+![Login Page](images/LoginPage.jpg)  
+![Signup Page](images/SignupPage.jpg)  
+![Home Page](images/HomePage.jpg)  
+![Home Page After Connect](images/HomePageAfterConnect.jpg)  
+![History Page](images/HistoryPage.jpg)  
+![Poster](images/Poster.png)  
+![Isometric View](images/Isometric_View.jpg)  
+![Top View with Case](images/Top_View_wCase.jpg)  
+![Top View without Case](images/Top_View_woCase.jpg)  
+
